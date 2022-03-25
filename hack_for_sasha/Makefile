@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -ggdb3 -g 
+CXXFLAGS=-Wall -Wextra -s
 DEPS=default_hash_functions.h
 OBJ=hack_for_sasha.o default_hash_functions.o 
 ODIR=obj

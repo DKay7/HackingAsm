@@ -24,7 +24,7 @@ const uint64_t HASH_PASSW_NOT_ABOBA = 2741087425025687488;
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-void PrintAcess (bool is_acces, int key);
+void PrintAccess (bool is_acces, int key);
 bool AskPassword (int* call_counter);
 bool Shiza (int num);
 bool CheckPolynomRoot (double x);
@@ -80,14 +80,16 @@ bool AskPassword (int* call_counter)
     // 0th vulnerability
     if (strcmp (passw, "hackers_password") == 0)
     {
-        PrintAcess (true, 0);
+        PrintAccess (true, 0);
+        free (passw);
         return true;
     }
 
     // poly roots 2nd vulnerability
     if (CheckPasswordLengthByPoly (passw))
     {
-        PrintAcess (true, 2);
+        PrintAccess (true, 2);
+        free (passw);
         return true;
     }
 
@@ -97,7 +99,8 @@ bool AskPassword (int* call_counter)
 
     if (bool result = Shiza (PASSW_COUNTER))
     {
-        PrintAcess (result, 1);
+        PrintAccess (result, 1);
+        free (passw);
         return true;
     }
 
@@ -105,13 +108,15 @@ bool AskPassword (int* call_counter)
     // definatly !not aboba
     if (str_hash (passw) == HASH_PASSW_NOT_ABOBA)
     {   
-        PrintAcess (true, -1);
+        PrintAccess (true, -1);
+        free (passw);
         return true;
     }
 
     else
-        PrintAcess (false, 0);
+        PrintAccess (false, 0);
 
+    free (passw);
     return false;
 }
 
