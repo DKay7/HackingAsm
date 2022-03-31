@@ -6,13 +6,14 @@
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-#define EPSILON 1e-5
+#define EPSILON 1e-7
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 const int ROOTS_ARR_LEN = 100;
-const int MAX_NUM_ROOTS = 6;
+const int MAX_NUM_ROOTS = 8;
 bool already_checked_roots[ROOTS_ARR_LEN];
+bool WAS_PREVIOUS_PASSWORD_ROOT = true;
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
@@ -27,7 +28,7 @@ const uint64_t HASH_PASSW_NOT_ABOBA = 2741087425025687488;
 void PrintAccess (bool is_acces, int key);
 bool AskPassword (int* call_counter);
 bool Shiza (int num);
-bool CheckPolynomRoot (double x);
+bool CheckPolynomRoot (int x);
 bool WasAllRootsFound ();
 bool CheckPasswordLengthByPoly (char* password);
 
@@ -162,14 +163,11 @@ bool Shiza (int num)
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-bool CheckPolynomRoot (double x)
+bool CheckPolynomRoot (int x)
 {   
-    double result = 1               * pow (x, 11)   - 340               * pow (x, 10) + 
-                    48359           * pow (x, 9)    - 3776174           * pow (x, 8)  + 
-                    178464807       * pow (x, 7)    - 5303226264        * pow (x, 6)  + 
-                    99659659721     * pow (x, 5)    - 1160291858246     * pow (x, 4)  + 
-                    7939680204712   * pow (x, 3)    - 28766516086816    * pow (x, 2)  + 
-                    45349092032640  * x             - 23456495462400;
+    double result = + 1.0 * pow (x, 8)+ -134.0 * pow (x, 7)+ 7112.0 * pow (x, 6)+ -192530.0 * pow (x, 5)+ 2852171.0 * pow (x, 4)+ -22906328.0 * pow (x, 3)+ 91789900.0 * pow (x, 2)+ -152270832.0 * pow (x, 1)+ 80720640.0 * pow (x, 0);
+
+    printf ("\nX: %d | RESULT %lf | IS LESS EPS %d\n", x, result, fabs (result) < EPSILON);
 
     if (fabs (result) < EPSILON)
         return true;
@@ -182,12 +180,15 @@ bool CheckPolynomRoot (double x)
 bool CheckPasswordLengthByPoly (char* password)
 {   
     int pass_len = strlen (password);
-    if (CheckPolynomRoot (pass_len) && pass_len < ROOTS_ARR_LEN)
+    if (CheckPolynomRoot (pass_len) && pass_len < ROOTS_ARR_LEN && WAS_PREVIOUS_PASSWORD_ROOT)
     {
+        WAS_PREVIOUS_PASSWORD_ROOT = true;
         already_checked_roots[pass_len] = true;
+        return WasAllRootsFound ();
     }
 
-    return WasAllRootsFound ();
+    WAS_PREVIOUS_PASSWORD_ROOT = false;
+    return false;
 }
 
 //flexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

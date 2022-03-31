@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -s
+CXXFLAGS=-Wall -Wextra -s -fno-stack-protector
 DEPS=default_hash_functions.h
 OBJ=hack_for_sasha.o default_hash_functions.o 
 ODIR=obj
@@ -9,9 +9,6 @@ ODIR=obj
 
 hack: $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $^ 
-
-# hack_asm: $(OBJ)
-# 	$(CC) -S -masm=intel -o $@  $(CFLAGS)
 
 .PHONY: clean
 
